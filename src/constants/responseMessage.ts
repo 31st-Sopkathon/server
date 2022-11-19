@@ -29,4 +29,8 @@ export default {
 
   // 서버 내 오류
   INTERNAL_SERVER_ERROR: "서버 내 오류",
+
+  // x-소개서
+  INTRODUCTION_SUCCESS: "x-소개서 생성 성공"
+
 };

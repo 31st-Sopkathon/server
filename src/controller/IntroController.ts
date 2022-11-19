@@ -1,23 +1,36 @@
+import { success } from './../constants/response';
 import { IntroCreateDTO } from '../interface/IntroCreateDTO';
 import { Request, Response } from "express";
 import { IntroService } from "../service";
+import { rm, sc } from '../constants';
+import { fail } from '../constants/response';
+import { validationResult } from "express-validator";
 
 /**
- * @route Method /x-introduction
+ * @route  POST/x-introduction
  * @desc x-자기소개서 생성
  * @access Public
  */
-const createIntro = async (req: Request, res: Response) => {
-  const introCreateDTO: IntroCreateDTO = req.body;
-
-  const data = await IntroService.createIntro(introCreateDTO);
-
-  if(!data) {
-    return res.status(404).json({ status: 404, message: "x-소개서 생성 실패" });
+const createIntro = async (req: Request, res: Response) => { 
+  const error = validationResult(req);
+  if (!error.isEmpty()) {
+    return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.BAD_REQUEST));
   }
-  return res. status(200).json({ status: 200, message: "x-소개서 생성 성공", data});
-};
 
+  const introCreateDTO: IntroCreateDTO = req.body;
+  try {
+    const data = await IntroService.createIntro(introCreateDTO);
+
+    if(!data) {
+      return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.NOT_FOUND));
+    }
+    return res. status(sc.OK).send(success(sc.OK, rm.INTRODUCTION_SUCCESS, data));
+
+  } catch (e) {
+    console.error(e);
+    return res.status(sc.INTERNAL_SERVER_ERROR).send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+  }
+};
 
 const userController = {
     createIntro,
