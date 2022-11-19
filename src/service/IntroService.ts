@@ -17,7 +17,7 @@ const createIntro = async (introCreateDTO: IntroCreateDTO) => {
       status: "ing",
       want_reason: introCreateDTO.wantReason,
       cannot_reason: introCreateDTO.cannotReason,
-      term: introCreateDTO.term
+      term: new Date(introCreateDTO.term)
     }
   });
 
