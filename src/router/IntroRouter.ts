@@ -4,7 +4,6 @@ import { body } from "express-validator";
 
 const router: Router = Router();
 
-//* x-소개서 생성 POST /x-introduction
 router.post(
     "/",
     [
@@ -15,6 +14,13 @@ router.post(
         body("cannotReason").notEmpty(),
         body("term").notEmpty(),
     ],
-    IntroController.createIntro);
+    IntroController.createIntro
+);
+
+router.post(
+    "/:introductionId",
+    [body("password").notEmpty()],
+    IntroController.getIntro
+);
 
 export default router;
