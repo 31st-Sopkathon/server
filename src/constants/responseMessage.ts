@@ -32,6 +32,7 @@ export default {
 
   // x-소개서
   INTRODUCTION_SUCCESS: "x-소개서 생성 성공",
-  GET_INTRODUCTION_SUCCESS: "x-소개서 조회 성공"
+  GET_INTRODUCTION_SUCCESS: "x-소개서 조회 성공",
+  UPDATE_INTRODUCTION_STATUS_SUCCESS: "x-소개서 상태 수정 성공"
 
 };
