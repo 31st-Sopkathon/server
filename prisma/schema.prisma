@@ -13,8 +13,8 @@ model x_introduction {
   category        String   @db.VarChar(400)
   status          String   @db.VarChar(400)
   password        String   @db.VarChar(400)
-  wantReason      String
-  cannotReason    String
+  want-reason      String
+  cannot-reason    String
   term            DateTime @db.Date
 
   @@map("x-introduction")
