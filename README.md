@@ -174,8 +174,70 @@ issue_num : issue 번호에 맞게 생성
 |_ 📁 service _
 ```
 
+### 🥫 ERD
+<img width="308" alt="image" src="https://user-images.githubusercontent.com/55437339/202868015-610f8d41-109d-4c06-be42-85f5ce8e5fb9.png">
+
+### 📚 schema.prisma
+```
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model x_introduction {
+  introduction_id Int      @id @default(autoincrement())
+  user_name       String   @db.VarChar(200)
+  category        String   @db.VarChar(400)
+  status          String   @db.VarChar(400)
+  password        String   @db.VarChar(400)
+  want_reason      String
+  cannot_reason    String
+  term            DateTime @db.Date
+
+  @@map("x-introduction")
+}
+
+```
+
+### 📚 package.json
+```
+{
+  "name": "seminar4",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon",
+    "build": "tsc && node dist"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
+    "@types/express": "^4.17.14",
+    "@types/express-validator": "^3.0.0",
+    "@types/node": "^18.11.9",
+    "nodemon": "^2.0.20"
+  },
+  "dependencies": {
+    "@prisma/client": "^4.6.1",
+    "@types/cors": "^2.8.12",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-validator": "^6.14.2",
+    "prisma": "^4.6.1"
+  }
+}
+
+```
+
 
 ### 👷‍♂️ Server Architecture
 - 개발 환경 : Typescript, Node  
 - 데이터베이스 : Prisma  
 - 서버 환경 : AWS EC2, PM2
+
+<img width="844" alt="image" src="https://user-images.githubusercontent.com/55437339/202868209-ff39190e-29a3-48d4-b4ae-d3bc6ac7a42a.png">
