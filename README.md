@@ -241,3 +241,7 @@ model x_introduction {
 - 서버 환경 : AWS EC2, PM2
 
 <img width="844" alt="image" src="https://user-images.githubusercontent.com/55437339/202868209-ff39190e-29a3-48d4-b4ae-d3bc6ac7a42a.png">
+
+
+### 🥕 API 명세서
+[API 명세서](https://ten-axolotl-c8b.notion.site/API-fd168792e7ae4d2eb2c8d538b1ecc0c0)
