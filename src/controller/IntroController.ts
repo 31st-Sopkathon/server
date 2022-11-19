@@ -8,7 +8,7 @@ import { validationResult } from "express-validator";
 
 /**
  * @route  POST/x-introduction
- * @desc x-자기소개서 생성
+ * @desc x-소개서 생성
  * @access Public
  */
 const createIntro = async (req: Request, res: Response) => { 
@@ -35,7 +35,7 @@ const createIntro = async (req: Request, res: Response) => {
 
 /**
  * @route  POST /x-introduction/:introductionId
- * @desc x-자기소개서 생성
+ * @desc x-소개서 조회
  * @access Public
  */
 const getIntro = async (req: Request, res: Response) => {
@@ -69,9 +69,42 @@ const getIntro = async (req: Request, res: Response) => {
   }
 }
 
+/**
+ * @route  PATCH /x-introduction/:introductionId/stuatus
+ * @desc x-소개서 상태값 변경
+ * @access Public
+ */
+const updateIntroStatus = async (req: Request, res: Response) => {
+  try {
+    const { introductionId } = req.params;
+    if (!introductionId) {
+      res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.BAD_REQUEST));
+    }
+
+    const error = validationResult(req);
+    if (!error.isEmpty()) {
+      return res.status(sc.BAD_REQUEST).send(fail(sc.BAD_REQUEST, rm.BAD_REQUEST));
+    }
+    const { status } = req.body;
+
+    const data = await IntroService.updateIntroStatus(+introductionId, status);
+
+    if (data === sc.NOT_FOUND) {
+      return res.status(sc.NOT_FOUND).send(fail(sc.NOT_FOUND, rm.NOT_FOUND));
+    }
+
+    return res.status(sc.OK).send(success(sc.OK, rm.UPDATE_INTRODUCTION_STATUS_SUCCESS, data));
+  } catch (e) {
+    console.error(e);
+    return res.status(sc.INTERNAL_SERVER_ERROR).send(fail(sc.INTERNAL_SERVER_ERROR, rm.INTERNAL_SERVER_ERROR));
+  }
+}
+
+
 const userController = {
   createIntro,
   getIntro,
+  updateIntroStatus
 };
 
 export default userController;

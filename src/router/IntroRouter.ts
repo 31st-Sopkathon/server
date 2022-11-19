@@ -23,4 +23,10 @@ router.post(
     IntroController.getIntro
 );
 
+router.patch(
+    "/:introductionId/status",
+    [body("status").notEmpty()],
+    IntroController.updateIntroStatus
+);
+
 export default router;

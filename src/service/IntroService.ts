@@ -1,5 +1,5 @@
 import { IntroCreateDTO } from './../interface/IntroCreateDTO';
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient, x_introduction } from "@prisma/client";
 import bcrypt from "bcryptjs";
 import { sc } from '../constants';
 const prisma = new PrismaClient();
@@ -68,9 +68,58 @@ const getIntro = async (introductionId: number, password: string) => {
 }
 
 
+const updateIntroStatus = async (introductionId: number, status: boolean) => {
+  const introduction = await prisma.x_introduction.findUnique({
+    where: {
+      introduction_id: introductionId
+    },
+  });
+
+  if (!introduction) {
+    return sc.NOT_FOUND;
+  }
+
+  if (status) {
+    const data = await prisma.x_introduction.update({
+      where: {
+        introduction_id: introductionId
+      },
+      data: {
+        status: "success"
+      }
+    });
+
+    return await getUpdatedData(data);
+  } else {
+    const data = await prisma.x_introduction.update({
+      where: {
+        introduction_id: introductionId
+      },
+      data: {
+        status: "fail"
+      }
+    });
+
+    return await getUpdatedData(data);
+  }
+}
+
+const getUpdatedData = async (data: x_introduction) => {
+  return {
+    userName: data.user_name,
+    category: data.category,
+    status: data.status,
+    wantReason: data.want_reason,
+    cannotReason: data.cannot_reason,
+    term: data.term
+  };
+}
+
+
 const userService = {
   createIntro,
   getIntro,
+  updateIntroStatus
 };
 
 export default userService;
