@@ -1,6 +1,7 @@
 import { IntroCreateDTO } from './../interface/IntroCreateDTO';
 import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
+import { sc } from '../constants';
 const prisma = new PrismaClient();
 
 
@@ -36,9 +37,40 @@ const encryptPassword = async (password: string) => {
   return encryptedPassword;
 };
 
+const getIntro = async (introductionId: number, password: string) => {
+  const introduction = await prisma.x_introduction.findUnique({
+    where: {
+      introduction_id: introductionId
+    },
+  });
+
+  if (!introduction) {
+    return sc.NOT_FOUND;
+  }
+
+  const isMatch = await bcrypt.compare(password, introduction.password);
+  if (!isMatch) {
+    return sc.BAD_REQUEST;
+  }
+
+  if (introduction.status == "ing" && introduction.term < new Date()) {
+    introduction.status = "fail";
+  }
+
+  return {
+    userName: introduction.user_name,
+    category: introduction.category,
+    status: introduction.status,
+    wantReason: introduction.want_reason,
+    cannotReason: introduction.cannot_reason,
+    term: introduction.term
+  };
+}
+
 
 const userService = {
   createIntro,
+  getIntro,
 };
 
 export default userService;
