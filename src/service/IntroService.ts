@@ -1,67 +1,49 @@
+import { IntroCreateDTO } from './../interface/IntroCreateDTO';
 import { PrismaClient } from "@prisma/client";
+import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
-//* userId로 유저 조회
-const getUserById = async (userId: number) => {
-  const user = await prisma.user.findUnique({
-    where: {
-      id: userId,
-    },
-  });
 
-  return user;
-};
-
-//* 유저 정보 생성
-const createUser = async (name: string, email: string, age: number) => {
-  const data = await prisma.user.create({
+//* x-자기소개서 생성
+const createIntro = async (introCreateDTO: IntroCreateDTO) => {
+  const salt = await bcrypt.genSalt(10); //^ 매우 작은 임의의 랜덤 텍스트 salt
+  const password = await bcrypt.hash(introCreateDTO.password, salt); //^ 위에서 랜덤을 생성한 salt를 이용해 암호화
+ 
+  const data = await prisma.x_introduction.create({
     data: {
-      userName: name,
-      age,
-      email
+      user_name: introCreateDTO.userName,
+      category: introCreateDTO.category,
+      password,
+      status: "ing",
+      want_reason: introCreateDTO.wantReason,
+      cannot_reason: introCreateDTO.cannotReason,
+      term: introCreateDTO.term
     }
   });
 
-  return data;
-}
-
-//* 유저 정보 전체 조회
-const getAllUser = async () => {
-  const data = await prisma.user.findMany();
-
-  return data;
-}
-
-//* 유저 정보 수정
-const updateUser = async (userId: number, name: string) => {
-  const data = await prisma.user.update({
+  const data2 = await prisma.x_introduction.findUnique({
     where: {
-      id: userId
+      introduction_id: data.introduction_id,
     },
-    data: {
-      userName: name
+    select: {
+      introduction_id: true,
+      user_name: true,
+      category: true,
+      status: true,
+      password: false,
+      want_reason: true,
+      cannot_reason: true,
+      term: true
     }
-  });
+  })
 
-  return data;
+  return data2;
 }
 
-//* 유저 정보 삭제
-const deleteUser = async (userId: number) => {
-  await prisma.user.delete({
-    where: {
-      id: userId
-    }
-  });
-}
 
 
 const userService = {
-  getUserById,
-  createUser,
-  getAllUser,
-  updateUser,
-  deleteUser,
+  createIntro,
 };
 
 export default userService;
