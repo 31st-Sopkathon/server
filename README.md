@@ -21,7 +21,6 @@
 | :-----: | :---: | :---: |
 | x 소개서 생성 | [POST] /x-introduction | `전선희` | 
 | x 소개서 조회 | [POST] /x-introduction/:introductionId | `전선희` | 
-| x 소개서 상태값 조회 | [GET] /x-introduction/:introductionId/status | `김소현` | 
 | x 소개서 상태값 업데이트 | [PATCH] /x-introduction/:introductionId/status | `김소현` | 
 
 
