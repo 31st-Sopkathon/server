@@ -4,6 +4,6 @@ export interface IntroCreateDTO {
     password: string,
     wantReason: string,
     cannotReason: string,
-    term: Date
+    term: string
   }
   
