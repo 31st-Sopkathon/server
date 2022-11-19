@@ -22,6 +22,7 @@ const createIntro = async (introCreateDTO: IntroCreateDTO) => {
   });
 
   return {
+    introductionId: data.introduction_id,
     userName: data.user_name,
     category: data.category,
     status: data.status,

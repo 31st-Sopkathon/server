@@ -1,4 +1,5 @@
 export interface IntroCreateDTO {
+    introductionId: number,
     userName: string,
     category: string,
     password: string,
