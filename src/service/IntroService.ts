@@ -21,11 +21,11 @@ const createIntro = async (introCreateDTO: IntroCreateDTO) => {
   });
 
   return {
-    user_name: data.user_name,
+    userName: data.user_name,
     category: data.category,
     status: data.status,
-    want_reason: data.want_reason,
-    cannot_reason: data.cannot_reason,
+    wantReason: data.want_reason,
+    cannotReason: data.cannot_reason,
     term: data.term
   };
 };
